@@ -1,55 +1,49 @@
+<?php
+// 1. Captura os parâmetros da URL, define valores padrão e aplica htmlspecialchars por segurança
+$tema = htmlspecialchars($_GET['tema'] ?? 'claro');
+$desconto = htmlspecialchars($_GET['desconto'] ?? '0');
+
+// 2. Define a cor da página dinamicamente de acordo com o parâmetro 'tema'
+$corFundo = ($tema === 'escuro') ? '#1e1e1e' : '#f4f4f9';
+$corTexto = ($tema === 'escuro') ? '#ffffff' : '#333333';
+?>
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <title>Produto</title>
+    <title>Página do Produto</title>
     <style>
         body {
+            background-color: <?= $corFundo ?>;
+            color: <?= $corTexto ?>;
             font-family: Arial, sans-serif;
-            background-color: #000000;
             padding: 40px;
-            color: #333;
+            transition: 0.3s;
         }
 
-        .card {
-            background-color: #ffffff;
-            padding: 30px;
+        .banner-desconto {
+            background-color: #28a745;
+            color: #ffffff;
+            padding: 15px;
             border-radius: 8px;
-            max-width: 400px;
-            border: 1px solid #ddd;
-        }
-
-        h1 {
-            color: #2c3e50;
-            margin-top: 0;
-        }
-
-        h2 {
-            font-size: 1.1rem;
-            color: #555;
-            margin-top: 20px;
-            margin-bottom: 5px;
-        }
-
-        p {
-            background-color: #eef2f7;
-            padding: 10px;
-            border-radius: 4px;
-            margin: 0;
+            margin-top: 15px;
+            display: inline-block;
         }
     </style>
 </head>
 <body>
 
-    <div class="card">
-        <h1>Produto</h1>
+    <h1>Smartphone Gamer</h1>
+    <p>Tema atual: <strong><?= $tema ?></strong></p>
 
-        <h2>Query Completa</h2>
-        <p>Este é o produto <?= isset($id) && $id !== '' ? ' ID: ' . htmlspecialchars($id) : '' ?></p>
-
-        <h2>Método GET</h2>
-        <p><?= isset($_GET['cat']) && $_GET['cat'] !== '' ? 'Categoria: ' . htmlspecialchars($_GET['cat']) : 'Sem categoria' ?></p>
-    </div>
+    <!-- Exibe a caixa de desconto apenas se houver desconto na URL -->
+    <?php if ((int)$desconto > 0): ?>
+        <div class="banner-desconto">
+            Parabéns! Você ativou <strong><?= $desconto ?>% de desconto</strong> neste produto!
+        </div>
+    <?php else: ?>
+        <p>Nenhum desconto aplicado na URL.</p>
+    <?php endif; ?>
 
 </body>
 </html>
